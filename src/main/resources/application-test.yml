@@ -2,6 +2,10 @@ server:
   port: 8081
 
 spring:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
   config:
     activate:
       on-profile: test
@@ -15,3 +19,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+jwt:
+  sercetkey: sssssss
+
+openapi:
+  service:
+    title: Backend API Document
+    version: v1.1.0
+    server: ${BACKEND_SERVICE:http://localhost:${server.port}}
