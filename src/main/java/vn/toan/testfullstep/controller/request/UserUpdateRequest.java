@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import vn.toan.testfullstep.common.Gender;
 
 @Getter
 @ToString
@@ -16,7 +17,7 @@ public class UserUpdateRequest implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
-    private String gender;
+    private Gender gender;
     private Date birthday;
     private String username;
     private String email;
