@@ -21,4 +21,5 @@ public class UserResponse implements Serializable {
     String email;
     String phone;
 
+
 }

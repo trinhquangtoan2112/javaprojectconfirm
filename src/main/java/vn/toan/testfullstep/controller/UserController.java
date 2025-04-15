@@ -1,7 +1,8 @@
 package vn.toan.testfullstep.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,26 +17,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import vn.toan.testfullstep.service.UserService;
 
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User controller")
+@AllArgsConstructor
 public class UserController {
-
-    @Operation(summary = "TEST API", description = "MO ta chi tiet")
+    private final UserService userService;
+    @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
     public Map<String, Object> getListUser(@RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") int pageNum,
             @RequestParam(defaultValue = "20") int pageSize) {
         UserResponse userResponse1 = new UserResponse();
-        userResponse1.setId(1l);
+
+        userResponse1.setId(1L);
         userResponse1.setFirstName("Tay");
         userResponse1.setLastName("Java");
         userResponse1.setGender(
@@ -46,7 +43,7 @@ public class UserController {
         userResponse1.setPhone("0975118228");
 
         UserResponse userResponse2 = new UserResponse();
-        userResponse2.setId(2l);
+        userResponse2.setId(2L);
         userResponse2.setFirstName("Leo");
         userResponse2.setLastName("Messi");
         userResponse2.setGender("Male");
@@ -89,24 +86,26 @@ public class UserController {
 
     @Operation(summary = "Create User", description = "API add new user to database")
     @PostMapping("/add")
-    public Map<String, Object> createUser(UserCreationRequest request) {
+    public ResponseEntity<Object> createUser(@RequestBody UserCreationRequest request) {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.CREATED.value());
         result.put("message", "User created successfully");
-        result.put("data", 1);
+        result.put("data", userService.saveUser(request));
 
-        return result;
+
+
+        return new ResponseEntity<>(result,HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update User", description = "API update user to database")
     @PutMapping("/upd")
-    public Map<String, Object> updateUser(UserUpdateRequest request) {
-
+    public Map<String, Object> updateUser(@RequestBody UserUpdateRequest request) {
+        userService.update(request);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.ACCEPTED.value());
         result.put("message", "User updated successfully");
-        result.put("data", "");
+        result.put("data",request);
 
         return result;
     }
@@ -114,11 +113,11 @@ public class UserController {
     @Operation(summary = "Change Password", description = "API change password for user to database")
     @PatchMapping("/change-pwd")
     public Map<String, Object> changePassword(UserPasswordRequest request) {
-
+        userService.changePassword(request);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.NO_CONTENT.value());
         result.put("message", "Password updated successfully");
-        result.put("data", "");
+
 
         return result;
     }
@@ -126,7 +125,7 @@ public class UserController {
     @Operation(summary = "Delete user", description = "API activate user from database")
     @DeleteMapping("/del/{userId}")
     public Map<String, Object> deleteUser(@PathVariable Long userId) {
-
+userService.deleteUser(userId);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.RESET_CONTENT.value());
         result.put("message", "User deleted successfully");
@@ -134,4 +133,6 @@ public class UserController {
 
         return result;
     }
+
+
 }
