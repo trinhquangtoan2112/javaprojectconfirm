@@ -13,7 +13,6 @@ import vn.toan.testfullstep.common.Gender;
 import vn.toan.testfullstep.common.UserStatus;
 import vn.toan.testfullstep.common.UserType;
 
-import java.sql.SQLType;
 import java.util.Date;
 
 @Getter
@@ -27,7 +26,7 @@ public class UserEntity {
     @Column(name = "id")
     Long id;
 
-    @Column(name = "first_name",length = 255)
+    @Column(name = "first_name", length = 255)
     String firstName;
 
     @Column(name = "last_name", length = 255)
@@ -42,16 +41,16 @@ public class UserEntity {
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "email",length = 255)
+    @Column(name = "email", length = 255)
     private String email;
 
-    @Column(name = "phone",length = 15)
+    @Column(name = "phone", length = 15)
     private String phone;
 
-    @Column(name = "username",length = 15)
+    @Column(name = "username", length = 15)
     private String username;
 
-    @Column(name = "password",length = 15)
+    @Column(name = "password", length = 15)
     private String password;
 
     @Enumerated(EnumType.STRING)

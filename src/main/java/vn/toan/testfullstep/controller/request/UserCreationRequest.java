@@ -5,7 +5,6 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import vn.toan.testfullstep.common.Gender;

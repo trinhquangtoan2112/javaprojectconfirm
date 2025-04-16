@@ -1,6 +1,8 @@
 package vn.toan.testfullstep.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,55 +11,44 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import vn.toan.testfullstep.controller.request.UserCreationRequest;
 import vn.toan.testfullstep.controller.request.UserPasswordRequest;
 import vn.toan.testfullstep.controller.request.UserUpdateRequest;
+import vn.toan.testfullstep.controller.response.UserPageResponse;
 import vn.toan.testfullstep.controller.response.UserResponse;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import vn.toan.testfullstep.service.UserService;
+import vn.toan.testfullstep.Service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/user")
 @Tag(name = "User controller")
 @AllArgsConstructor
+@Slf4j
 public class UserController {
     private final UserService userService;
+
+    @GetMapping("/path")
+    public String getMethodName() {
+        return "test";
+    }
+
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
-    public Map<String, Object> getListUser(@RequestParam(required = false) String name,
+    public Map<String, Object> getListUser(@RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "0") int pageNum,
-            @RequestParam(defaultValue = "20") int pageSize) {
-        UserResponse userResponse1 = new UserResponse();
-
-        userResponse1.setId(1L);
-        userResponse1.setFirstName("Tay");
-        userResponse1.setLastName("Java");
-        userResponse1.setGender(
-                "Male");
-        userResponse1.setBirthday(new Date());
-        userResponse1.setUsername("admin");
-        userResponse1.setEmail("admin@gmail.com");
-        userResponse1.setPhone("0975118228");
-
-        UserResponse userResponse2 = new UserResponse();
-        userResponse2.setId(2L);
-        userResponse2.setFirstName("Leo");
-        userResponse2.setLastName("Messi");
-        userResponse2.setGender("Male");
-        userResponse2.setBirthday(new Date());
-        userResponse2.setUsername("user");
-        userResponse2.setEmail("user@gmail.com");
-        userResponse2.setPhone("0971234567");
-
-        List<UserResponse> userList = List.of(userResponse1, userResponse2);
+            @RequestParam(defaultValue = "10") int pageSize) {
+        log.info("user");
+        UserPageResponse listuser = userService.findAll(keyword, sort, pageNum, pageSize);
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.OK.value());
         result.put("message", "Lấy dữ liệu thành công");
-        result.put("data", userList);
+        result.put("data", listuser);
         return result;
 
     }
@@ -78,8 +69,8 @@ public class UserController {
 
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.OK.value());
-        result.put("message", "user");
-        result.put("data", userResponse);
+        result.put("message", "Get user success");
+        result.put("data", userService.findById(userId));
 
         return result;
     }
@@ -93,9 +84,7 @@ public class UserController {
         result.put("message", "User created successfully");
         result.put("data", userService.saveUser(request));
 
-
-
-        return new ResponseEntity<>(result,HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update User", description = "API update user to database")
@@ -105,7 +94,7 @@ public class UserController {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.ACCEPTED.value());
         result.put("message", "User updated successfully");
-        result.put("data",request);
+        result.put("data", request);
 
         return result;
     }
@@ -118,14 +107,13 @@ public class UserController {
         result.put("status", HttpStatus.NO_CONTENT.value());
         result.put("message", "Password updated successfully");
 
-
         return result;
     }
 
     @Operation(summary = "Delete user", description = "API activate user from database")
     @DeleteMapping("/del/{userId}")
     public Map<String, Object> deleteUser(@PathVariable Long userId) {
-userService.deleteUser(userId);
+        userService.deleteUser(userId);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.RESET_CONTENT.value());
         result.put("message", "User deleted successfully");
@@ -133,6 +121,5 @@ userService.deleteUser(userId);
 
         return result;
     }
-
 
 }

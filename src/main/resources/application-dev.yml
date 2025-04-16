@@ -17,7 +17,7 @@ spring:
   #         format_sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
-    username: toan2002123
+    username: toan2002
     password: password
   jpa:
     properties:
