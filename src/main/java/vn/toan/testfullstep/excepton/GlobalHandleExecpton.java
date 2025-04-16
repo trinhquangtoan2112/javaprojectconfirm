@@ -85,7 +85,7 @@ public class GlobalHandleExecpton {
     @NoArgsConstructor
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
-    private class ErrorResponse {
+    private static class ErrorResponse {
         Date timestamp;
         int status;
         String path;
