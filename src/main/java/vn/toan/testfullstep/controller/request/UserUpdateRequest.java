@@ -14,13 +14,13 @@ import vn.toan.testfullstep.common.Gender;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest implements Serializable {
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private Gender gender;
-    private Date birthday;
-    private String username;
-    private String email;
-    private String phone;
-    private List<AddressRequest> addresses;
+    Long id;
+    String firstName;
+    String lastName;
+    Gender gender;
+    Date birthday;
+    String username;
+    String email;
+    String phone;
+    List<AddressRequest> addresses;
 }
