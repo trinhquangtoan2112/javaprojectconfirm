@@ -38,6 +38,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!-- Json web token -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>  
+
         <!-- jpa -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

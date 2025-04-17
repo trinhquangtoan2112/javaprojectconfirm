@@ -21,7 +21,10 @@ spring:
         format_sql: true
 
 jwt:
-  sercetkey: sssssss
+  expiryMinutes: 60
+  expiryDay: 14
+  accessKey: IIwLeRIVsznVTPFEYmA6HiVVBrlKkKqC36OpWzqw8mk=
+  refreshKey: tvszknimPZQEdy3c9TCERBLAkOyoCc2ZvOmGcHsRJgg=
 
 openapi:
   service:

@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintViolationException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,7 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class GlobalHandleExecpton {
 
     @ExceptionHandler({ ConstraintViolationException.class, MissingServletRequestParameterException.class,
-            MethodArgumentNotValidException.class })
+            MethodArgumentNotValidException.class, InvalidDataException.class })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "400", description = "Bad Request", content = {
