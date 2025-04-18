@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 import vn.toan.testfullstep.model.UserEntity;
 import java.util.List;
-
+import org.springframework.stereotype.Repository;
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "select u from User u where u.status='ACTIVE' " +

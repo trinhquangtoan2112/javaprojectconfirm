@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserPageResponse findAll(String keyword, String sort, int pageNumber, int pageSize) {
-
+        addressRepost.findById(id);
         // sort
         Sort.Order order = new Sort.Order(Sort.Direction.ASC, "id");
         if (StringUtils.hasLength(sort)) {
