@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -40,6 +41,8 @@ public class UserController {
 
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
+//    @PreAuthorize("hasAnyAuthority('admin')")
+    @PreAuthorize("hasAnyRole('SYSADMIN')")
     public Map<String, Object> getListUser(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "0") int pageNum,

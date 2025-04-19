@@ -18,10 +18,7 @@ import vn.toan.testfullstep.excepton.InvalidDataException;
 import vn.toan.testfullstep.Service.JwtService;
 
 import java.security.Key;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +41,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateAccessToken(long userId, String username,
-            Collection<? extends GrantedAuthority> authorities) {
+                                      List<String> authorities ) {
         log.info("Generate access token for user {} with authorities {}", userId, authorities);
 
         Map<String, Object> claims = new HashMap<>();
@@ -56,7 +53,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateRefreshToken(long userId, String username,
-            Collection<? extends GrantedAuthority> authorities) {
+                                       List<String> authorities) {
         log.info("Generate refresh token");
 
         Map<String, Object> claims = new HashMap<>();

@@ -5,11 +5,13 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import vn.toan.testfullstep.common.Gender;
@@ -17,20 +19,15 @@ import vn.toan.testfullstep.common.UserStatus;
 import vn.toan.testfullstep.common.UserType;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
+@Slf4j
 @Getter
 @Setter
 @Entity(name = "User")
 @Table(name = "tbl_user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserEntity implements UserDetails, Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    Long id;
+public class UserEntity extends AbstractEntity<Long> implements UserDetails, Serializable {
 
     @Column(name = "first_name", length = 255)
     String firstName;
@@ -67,19 +64,22 @@ public class UserEntity implements UserDetails, Serializable {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private UserStatus status;
 
-    @Column(name = "createAt", length = 255)
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
 
-    @Column(name = "updated_at", length = 255)
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date updatedAt;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<UserHasRole> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<GroupHasUser> groups = new HashSet<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        List<Role> roleList = roles.stream().map(UserHasRole::getRole).toList();
+
+        // Get role name
+        List<String> roleNames = roleList.stream().map(Role::getName).toList();
+        log.info("User roles: {}", roleNames);
+
+//        return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
+        return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
     }
 
     @Override

@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,12 +34,49 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Slf4j(topic = "Customize-request-filter")
 @RequiredArgsConstructor
 @Component
+@EnableMethodSecurity(prePostEnabled = true)
 public class CustomizeRequestFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserServiceDetail serviceDetail;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        //check quyen truoc
+//        @Component
+//        public class RoleBasedAuthorizationFilter extends OncePerRequestFilter {
+//
+//            private static final Map<String, String> URL_ROLE_MAPPING = Map.of(
+//                    "/user/list", "ADMIN",
+//                    "/user/detail", "USER",
+//                    "/user/settings", "ADMIN",
+//                    "/user/profile", "USER"
+//            );
+//
+//            @Override
+//            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+//                                            FilterChain filterChain) throws ServletException, IOException {
+//
+//                String requestUrl = request.getRequestURI();
+//                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+//                // Kiểm tra xem request URL có trong danh sách ánh xạ không
+//                for (Map.Entry<String, String> entry : URL_ROLE_MAPPING.entrySet()) {
+//                    if (requestUrl.startsWith(entry.getKey())) {
+//                        String requiredRole = entry.getValue();
+//
+//                        // Kiểm tra quyền của người dùng
+//                        if (auth == null || auth.getAuthorities().stream()
+//                                .noneMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(requiredRole))) {
+//                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Không có quyền truy cập: " + requiredRole);
+//                            return;
+//                        }
+//                    }
+//                }
+//
+//                filterChain.doFilter(request, response);
+//            }
+//        }
         log.info("{}  {}", request.getMethod(), request.getRequestURI());
         final String authHeader = request.getHeader(AUTHORIZATION);
         if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer ")) {
