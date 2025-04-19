@@ -56,7 +56,7 @@ public class UserEntity implements UserDetails, Serializable {
     @Column(name = "username", length = 15)
     private String username;
 
-    @Column(name = "password", length = 15)
+    @Column(name = "password", length = 255)
     private String password;
 
     @Enumerated(EnumType.STRING)

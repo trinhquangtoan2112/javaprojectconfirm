@@ -22,8 +22,8 @@ import vn.toan.testfullstep.controller.response.UserResponse;
 import vn.toan.testfullstep.excepton.ResourceNotFoundExcepton;
 import vn.toan.testfullstep.model.AddressEntity;
 import vn.toan.testfullstep.model.UserEntity;
-import vn.toan.testfullstep.Repository.AddressRepository;
-import vn.toan.testfullstep.Repository.UserRepository;
+import vn.toan.testfullstep.repository.AddressRepository;
+import vn.toan.testfullstep.repository.UserRepository;
 import vn.toan.testfullstep.Service.UserService;
 
 import java.util.ArrayList;

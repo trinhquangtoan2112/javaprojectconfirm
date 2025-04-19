@@ -1,13 +1,15 @@
-package vn.toan.testfullstep.Repository;
+package vn.toan.testfullstep.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import org.springframework.stereotype.Repository;
 import vn.toan.testfullstep.model.UserEntity;
-import java.util.List;
 
+
+@Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query(value = "select u from User u where u.status='ACTIVE' " +
@@ -19,4 +21,5 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     Page<UserEntity> searchByKeyWord(String keyword, Pageable pageable);
 
     UserEntity findByUsername(String username);
+    UserEntity findByEmail(String email);
 }

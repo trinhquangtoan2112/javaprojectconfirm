@@ -3,6 +3,7 @@ package vn.toan.testfullstep.excepton;
 import java.util.Date;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,7 +56,7 @@ public class GlobalHandleExecpton {
         return errorResponse;
     }
 
-    @ExceptionHandler(ResourceNotFoundExcepton.class)
+    @ExceptionHandler({ResourceNotFoundExcepton.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "404", description = "Not Found", content = {

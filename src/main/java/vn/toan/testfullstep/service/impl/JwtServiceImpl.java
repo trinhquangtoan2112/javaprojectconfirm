@@ -1,4 +1,4 @@
-package vn.toan.testfullstep.Service.impl;
+package vn.toan.testfullstep.service.impl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -43,7 +43,7 @@ public class JwtServiceImpl implements JwtService {
     private String refreshKey;
 
     @Override
-    public String generateToken(long userId, String username,
+    public String generateAccessToken(long userId, String username,
             Collection<? extends GrantedAuthority> authorities) {
         log.info("Generate access token for user {} with authorities {}", userId, authorities);
 
@@ -55,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String refreshToken(long userId, String username,
+    public String generateRefreshToken(long userId, String username,
             Collection<? extends GrantedAuthority> authorities) {
         log.info("Generate refresh token");
 
@@ -63,7 +63,7 @@ public class JwtServiceImpl implements JwtService {
         claims.put("userId", userId);
         claims.put("role", authorities);
 
-        return generateRefreshToken(claims, username);
+        return generateRefresh(claims, username);
     }
 
     @Override
@@ -73,16 +73,14 @@ public class JwtServiceImpl implements JwtService {
 
     private String generateToken(Map<String, Object> claims, String username) {
         log.info("----------[ generateToken ]----------");
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expiryMinutes))
-                .signWith(getKey(TokenType.ACCESS_TOKEN), SignatureAlgorithm.HS256)
+        return Jwts.builder().setClaims(claims).setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() +1000*60*60*24 *expiryMinutes))
+                .signWith(getKey(TokenType.ACCESS_TOKEN),SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    private String generateRefreshToken(Map<String, Object> claims, String username) {
+    private String generateRefresh(Map<String, Object> claims, String username) {
         log.info("----------[ generateRefreshToken ]----------");
         return Jwts.builder()
                 .setClaims(claims)

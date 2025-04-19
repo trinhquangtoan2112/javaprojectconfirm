@@ -8,9 +8,9 @@ import vn.toan.testfullstep.common.TokenType;
 
 public interface JwtService {
 
-    String generateToken(long userId, String username, Collection<? extends GrantedAuthority> authorities);
+    String generateAccessToken(long userId, String username, Collection<? extends GrantedAuthority> authorities);
 
-    String refreshToken(long userId, String username, Collection<? extends GrantedAuthority> authorities);
+    String generateRefreshToken(long userId, String username, Collection<? extends GrantedAuthority> authorities);
 
     String extractUsername(String token, TokenType tokenType);
 }

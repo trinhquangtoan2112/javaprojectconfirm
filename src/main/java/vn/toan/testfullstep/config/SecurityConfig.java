@@ -2,6 +2,7 @@ package vn.toan.testfullstep.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -17,6 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import vn.toan.testfullstep.Service.UserServiceDetail;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -60,6 +63,21 @@ public class SecurityConfig {
                 .ignoring()
                 .requestMatchers("/actuator/**", "/v3/**", "/webjars/**", "/swagger-ui*/*swagger-initializer.js",
                         "/swagger-ui/**", "/favicon.ico");
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfiguration(){
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
+                registry.addMapping("**")
+                        .allowedOrigins("http://localhost:8500")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Allowed HTTP methods
+                        .allowedHeaders("*") // Allowed request headers
+                        .allowCredentials(false)
+                        .maxAge(3600);
+            }
+        };
     }
 
     @Bean
