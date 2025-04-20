@@ -1,10 +1,9 @@
-package vn.toan.testfullstep.Service;
+package vn.toan.testfullstep.service;
 
-import java.util.Collection;
 import java.util.List;
 
-import org.springframework.security.core.GrantedAuthority;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import vn.toan.testfullstep.common.TokenType;
 
 public interface JwtService {
@@ -14,4 +13,5 @@ public interface JwtService {
     String generateRefreshToken(long userId, String username, List<String> authorities);
 
     String extractUsername(String token, TokenType tokenType);
+    Boolean isValid(String token, UserDetails user,TokenType tokenType);
 }

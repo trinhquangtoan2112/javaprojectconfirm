@@ -38,4 +38,17 @@ public class AuthenticationController {
         log.info("Request token request");
         return authenticatedService.getRefreshToken(refreshToken);
     }
+
+    @PostMapping("/login")
+    @Operation(summary = "Login account", description = "Login account")
+    public String login(@RequestBody SignInRequest signIn) {
+         return "";
+    }
+    @PostMapping("/logout")
+    @Operation(summary = "Log out", description = "Log out account")
+    public String logout(@RequestBody SignInRequest signIn) {
+        return "";
+    }
+
+
 }

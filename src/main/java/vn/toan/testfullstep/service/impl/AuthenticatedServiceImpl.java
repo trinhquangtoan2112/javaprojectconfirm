@@ -1,4 +1,4 @@
-package vn.toan.testfullstep.Service.impl;
+package vn.toan.testfullstep.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -26,13 +26,14 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
      private final UserRepository  userRepository;
      private final AuthenticationManager authenticationManager;
      private final JwtService jwtService;
+
+
     @Override
     public TokenResponse getAccessToken(SignInRequest signInRequest) {
         log.info("Get access token");
         List<String> authorties = new ArrayList<>();
 try {
     Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signInRequest.getEmail(),signInRequest.getPassword()));
-   System.out.println(authentication.isAuthenticated());
     log.info("isAuthenticated = {}", authentication.isAuthenticated());
     log.info("Authorities: {}", authentication.getAuthorities().toString());
     authorties.add( authentication.getAuthorities().toString());

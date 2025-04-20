@@ -11,6 +11,7 @@ import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import vn.toan.testfullstep.common.TokenType;
@@ -68,6 +69,12 @@ public class JwtServiceImpl implements JwtService {
         return extractClaim(token, type, Claims::getSubject);
     }
 
+    @Override
+    public Boolean isValid(String token, UserDetails user,TokenType type) {
+        final String username =extractUsername(token,type);
+        return username.equalsIgnoreCase(user.getUsername());
+    }
+
     private String generateToken(Map<String, Object> claims, String username) {
         log.info("----------[ generateToken ]----------");
         return Jwts.builder().setClaims(claims).setSubject(username)
@@ -104,6 +111,7 @@ public class JwtServiceImpl implements JwtService {
     private <T> T extractClaim(String token, TokenType type, Function<Claims, T> claimResolver) {
         log.info("----------[ extractClaim ]----------");
         final Claims claims = extraAllClaim(token, type);
+        log.info("----------claimResolver.apply(claims)----------",claimResolver.apply(claims));
         return claimResolver.apply(claims);
     }
 

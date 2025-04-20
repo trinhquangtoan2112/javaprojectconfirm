@@ -13,4 +13,6 @@ import lombok.experimental.FieldDefaults;
 public class TokenResponse implements Serializable {
     String accessToken;
     String refreshToken;
+    Long userId;
+
 }
