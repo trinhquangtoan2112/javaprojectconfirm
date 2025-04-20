@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import vn.toan.testfullstep.Service.AuthenticatedService;
-import vn.toan.testfullstep.Service.JwtService;
+import vn.toan.testfullstep.service.JwtService;
 import vn.toan.testfullstep.controller.request.SignInRequest;
 import vn.toan.testfullstep.controller.response.TokenResponse;
 import vn.toan.testfullstep.repository.UserRepository;

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import vn.toan.testfullstep.common.TokenType;
 import vn.toan.testfullstep.excepton.InvalidDataException;
-import vn.toan.testfullstep.Service.JwtService;
+import vn.toan.testfullstep.service.JwtService;
 
 import java.security.Key;
 import java.util.*;
