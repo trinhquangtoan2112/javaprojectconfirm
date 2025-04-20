@@ -1,5 +1,6 @@
 package vn.toan.testfullstep.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 @Setter
@@ -16,5 +17,6 @@ public class GroupHasUser extends AbstractEntity<Integer>{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private UserEntity user;
 }

@@ -30,7 +30,7 @@ public class SecurityConfig {
 
     private final CustomizeRequestFilter requestFilter;
     private final UserServiceDetail userServiceDetail;
-    private static final String[] WHITE_LIST = {"/auth/**", "/account"};
+    private static final String[] WHITE_LIST = {"/auth/**"};
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)

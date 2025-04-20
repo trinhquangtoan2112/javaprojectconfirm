@@ -1,5 +1,6 @@
 package vn.toan.testfullstep.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Table(name = "tbl_role")
 public class Role extends AbstractEntity<Integer>{
+    @JsonIgnore
     @Column(name = "name")
     private String name;
 

@@ -93,14 +93,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findById(Long id) {
+    public UserEntity findById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> {
             return new ResourceNotFoundExcepton("Không tìm thấy người dùngss");
         });
+        log.info("User: {}", user);
+        log.info("Roles: {}", user.getRoles());
 
         // UserResponse userResponse = new UserResponse();
         // userResponse = modalMapperConfig.map(user);
-        return modelMapper.map(user, UserResponse.class);
+        return user;
     }
 
     @Override

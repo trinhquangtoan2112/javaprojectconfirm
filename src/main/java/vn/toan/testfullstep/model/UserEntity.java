@@ -1,5 +1,9 @@
 package vn.toan.testfullstep.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,9 +25,11 @@ import vn.toan.testfullstep.common.UserType;
 import java.io.Serializable;
 import java.util.*;
 
-@Slf4j
+@Slf4j(topic = "User  entity")
 @Getter
 @Setter
+
+
 @Entity(name = "User")
 @Table(name = "tbl_user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -66,9 +72,11 @@ public class UserEntity extends AbstractEntity<Long> implements UserDetails, Ser
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+@JsonIgnore
     private Set<UserHasRole> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+
     private Set<GroupHasUser> groups = new HashSet<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -76,10 +84,13 @@ public class UserEntity extends AbstractEntity<Long> implements UserDetails, Ser
 
         // Get role name
         List<String> roleNames = roleList.stream().map(Role::getName).toList();
-        log.info("User roles: {}", roleNames);
+      
+            log.info("User roles: {}", roleNames);
+            log.info("Test1421424 {}", roleNames);
+            log.info("Authoried {}", roleNames.stream().map(s -> new SimpleGrantedAuthority("ROLE_" + s.toUpperCase())).toList());
 
-//        return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
-        return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
+     return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
+     //   return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
     }
 
     @Override
