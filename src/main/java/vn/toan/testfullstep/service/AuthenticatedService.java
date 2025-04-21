@@ -1,4 +1,4 @@
-package vn.toan.testfullstep.Service;
+package vn.toan.testfullstep.service;
 
 import vn.toan.testfullstep.controller.request.SignInRequest;
 import vn.toan.testfullstep.controller.response.TokenResponse;

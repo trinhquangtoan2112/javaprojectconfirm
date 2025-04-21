@@ -27,17 +27,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import vn.toan.testfullstep.service.JwtService;
-import vn.toan.testfullstep.Service.UserServiceDetail;
+import vn.toan.testfullstep.service.UserServiceDetail;
 import vn.toan.testfullstep.common.TokenType;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Slf4j(topic = "Customize-request-filter")
 @RequiredArgsConstructor
 @Component
 @EnableMethodSecurity(prePostEnabled = true)
 public class CustomizeRequestFilter extends OncePerRequestFilter {
+
     private final JwtService jwtService;
     private final UserServiceDetail serviceDetail;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
@@ -106,6 +109,7 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
     }
+
     private String errorResponse(String message) {
         try {
             ErrorResponse error = new ErrorResponse();
@@ -120,9 +124,11 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
             return ""; // Return an empty string if serialization fails
         }
     }
+
     @Setter
     @Getter
     private class ErrorResponse {
+
         private Date timestamp;
         private int status;
         private String error;

@@ -1,4 +1,4 @@
-package vn.toan.testfullstep.Service.impl;
+package vn.toan.testfullstep.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import vn.toan.testfullstep.model.AddressEntity;
 import vn.toan.testfullstep.model.UserEntity;
 import vn.toan.testfullstep.repository.AddressRepository;
 import vn.toan.testfullstep.repository.UserRepository;
-import vn.toan.testfullstep.Service.UserService;
+import vn.toan.testfullstep.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 @Slf4j(topic = "USER-SERVICE")
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;

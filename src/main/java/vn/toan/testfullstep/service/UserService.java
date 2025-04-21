@@ -1,4 +1,4 @@
-package vn.toan.testfullstep.Service;
+package vn.toan.testfullstep.service;
 
 import vn.toan.testfullstep.controller.request.UserCreationRequest;
 import vn.toan.testfullstep.controller.request.UserPasswordRequest;
