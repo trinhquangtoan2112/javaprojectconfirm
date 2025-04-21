@@ -17,7 +17,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
-@Profile({ "dev", "test" })
+@Profile({"dev", "test"})
+
 public class OpenApiConfig {
 
     @Bean

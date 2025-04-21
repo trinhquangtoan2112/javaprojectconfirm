@@ -24,8 +24,10 @@ import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import vn.toan.testfullstep.common.TokenType;
 import vn.toan.testfullstep.excepton.InvalidDataException;
+import vn.toan.testfullstep.model.RedisToken;
 import vn.toan.testfullstep.model.Token;
 import vn.toan.testfullstep.model.UserEntity;
+import vn.toan.testfullstep.service.RedisTokenService;
 import vn.toan.testfullstep.service.TokenService;
 
 @Service
@@ -37,6 +39,7 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final TokenService tokenService;
+    private final RedisTokenService redisTokenService;
 
     @Override
     public TokenResponse getAccessToken(SignInRequest signInRequest) {
@@ -59,11 +62,10 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
         String accessToken = jwtService.generateAccessToken(user.getId(), signInRequest.getEmail(), authorties);
         String refreshToken = jwtService.generateRefreshToken(user.getId(), signInRequest.getEmail(), authorties);
 
-        Token token = new Token();
+        RedisToken token = new RedisToken();
         token.setAccessToken(accessToken);
         token.setRefreshToken(refreshToken);
-        token.setEmail(signInRequest.getEmail());
-        tokenService.saveToken(token);
+        redisTokenService.saveToken(token);
         return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
     }
@@ -83,11 +85,12 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
         List<String> authorities = getAuthoriy(userEntity);
 
         String accessToken = jwtService.generateAccessToken(userEntity.getId(), userEntity.getEmail(), authorities);
-        Token saveToken = new Token();
+        RedisToken saveToken = new RedisToken();
         saveToken.setAccessToken(accessToken);
         saveToken.setRefreshToken(token);
-        saveToken.setEmail(userEntity.getEmail());
-        // tokenService.saveToken(saveToken);
+
+        redisTokenService.saveToken(saveToken);
+
         return TokenResponse.builder().accessToken(accessToken).build();
     }
 
