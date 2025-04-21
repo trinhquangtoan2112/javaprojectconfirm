@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,8 +18,15 @@ import vn.toan.testfullstep.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import io.micrometer.common.util.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import vn.toan.testfullstep.common.TokenType;
+import vn.toan.testfullstep.excepton.InvalidDataException;
+import vn.toan.testfullstep.model.Token;
 import vn.toan.testfullstep.model.UserEntity;
+import vn.toan.testfullstep.service.TokenService;
 
 @Service
 @Slf4j(topic = "Authentication IMPL")
@@ -30,6 +36,7 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final TokenService tokenService;
 
     @Override
     public TokenResponse getAccessToken(SignInRequest signInRequest) {
@@ -50,15 +57,78 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
         }
         var user = userRepository.findByEmail(signInRequest.getEmail());
         String accessToken = jwtService.generateAccessToken(user.getId(), signInRequest.getEmail(), authorties);
-        String refreshToken = jwtService.generateAccessToken(user.getId(), signInRequest.getEmail(), authorties);
+        String refreshToken = jwtService.generateRefreshToken(user.getId(), signInRequest.getEmail(), authorties);
+
+        Token token = new Token();
+        token.setAccessToken(accessToken);
+        token.setRefreshToken(refreshToken);
+        token.setEmail(signInRequest.getEmail());
+        tokenService.saveToken(token);
         return TokenResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
     }
 
     @Override
-    public TokenResponse getRefreshToken(String request) {
+    public TokenResponse getRefreshToken(HttpServletRequest request) {
+        log.info("Get refresh token");
+        String token = request.getHeader("RefresheToken");
+        if (StringUtils.isBlank(token)) {
+            throw new InvalidDataException("Không chứa refreshToken");
+        }
+        final String email = jwtService.extractUsername(token, TokenType.REFRESH_TOKEN);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (!jwtService.isValid(token, userEntity, TokenType.REFRESH_TOKEN)) {
+            throw new InvalidDataException("JWT INVALID");
+        }
+        List<String> authorities = getAuthoriy(userEntity);
 
-        throw new UnsupportedOperationException("Unimplemented method 'getRefreshToken'");
+        String accessToken = jwtService.generateAccessToken(userEntity.getId(), userEntity.getEmail(), authorities);
+        Token saveToken = new Token();
+        saveToken.setAccessToken(accessToken);
+        saveToken.setRefreshToken(token);
+        saveToken.setEmail(userEntity.getEmail());
+        // tokenService.saveToken(saveToken);
+        return TokenResponse.builder().accessToken(accessToken).build();
     }
 
+    private List<String> getAuthoriy(UserEntity user) {
+        return user.getRoles().stream()
+                .map(role -> role.getRole().getName())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String logout(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        if (StringUtils.isBlank(token)) {
+            throw new InvalidDataException("Token must not be blank");
+        }
+        final String email = jwtService.extractUsername(token, TokenType.REFRESH_TOKEN);
+        tokenService.delete(email);
+        return "Delete";
+    }
+
+    @Override
+    public String forgotPassword(String email) {
+        //    check email
+
+        //check user active or inactive
+        //create token
+        //send email
+        return "Success";
+    }
+
+    @Override
+    public String resetPassword(String secretKey) {
+
+        if (StringUtils.isBlank(secretKey)) {
+            throw new InvalidDataException("Không chứa refreshToken");
+        }
+        final String email = jwtService.extractUsername(secretKey, TokenType.RESET_TOKEN);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (!jwtService.isValid(secretKey, userEntity, TokenType.REFRESH_TOKEN)) {
+            throw new InvalidDataException("JWT INVALID");
+        }
+        throw new UnsupportedOperationException("Unimplemented method 'resetPassword'");
+    }
 }

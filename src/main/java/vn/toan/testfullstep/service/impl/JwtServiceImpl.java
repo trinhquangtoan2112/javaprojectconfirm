@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.function.Function;
 
 import lombok.extern.slf4j.Slf4j;
+import vn.toan.testfullstep.model.UserEntity;
 
 @Service
 @Slf4j(topic = "JWT-SERVICE")
@@ -42,7 +43,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateAccessToken(long userId, String username,
-                                      List<String> authorities ) {
+            List<String> authorities) {
         log.info("Generate access token for user {} with authorities {}", userId, authorities);
 
         Map<String, Object> claims = new HashMap<>();
@@ -54,7 +55,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateRefreshToken(long userId, String username,
-                                       List<String> authorities) {
+            List<String> authorities) {
         log.info("Generate refresh token");
 
         Map<String, Object> claims = new HashMap<>();
@@ -70,17 +71,17 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public Boolean isValid(String token, UserDetails user,TokenType type) {
-        final String username =extractUsername(token,type);
-        return username.equalsIgnoreCase(user.getUsername());
+    public Boolean isValid(String token, UserDetails user, TokenType type) {
+        final String username = extractUsername(token, type);
+        return username.equalsIgnoreCase(((UserEntity) user).getEmail());
     }
 
     private String generateToken(Map<String, Object> claims, String username) {
         log.info("----------[ generateToken ]----------");
         return Jwts.builder().setClaims(claims).setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() +1000*60*60*24 *expiryMinutes))
-                .signWith(getKey(TokenType.ACCESS_TOKEN),SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * expiryMinutes))
+                .signWith(getKey(TokenType.ACCESS_TOKEN), SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -104,14 +105,14 @@ public class JwtServiceImpl implements JwtService {
             case REFRESH_TOKEN -> {
                 return Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshKey));
             }
-            default -> throw new InvalidDataException("Invalid token type");
+            default ->
+                throw new InvalidDataException("Invalid token type");
         }
     }
 
     private <T> T extractClaim(String token, TokenType type, Function<Claims, T> claimResolver) {
         log.info("----------[ extractClaim ]----------");
         final Claims claims = extraAllClaim(token, type);
-        log.info("----------claimResolver.apply(claims)----------",claimResolver.apply(claims));
         return claimResolver.apply(claims);
     }
 

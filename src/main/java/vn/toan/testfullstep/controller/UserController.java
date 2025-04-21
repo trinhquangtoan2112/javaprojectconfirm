@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @AllArgsConstructor
 @Slf4j
 public class UserController {
+
     private final UserService userService;
 
     @GetMapping("/path")
@@ -61,7 +62,7 @@ public class UserController {
     @Operation(summary = "Get user detail", description = "API retrieve user detail by ID from database")
     @GetMapping("/{userId}")
     @PreAuthorize("hasAnyAuthority('manager','admin')")
-   // @PreAuthorize("hasAnyRole('MANAGER')")
+    // @PreAuthorize("hasAnyRole('MANAGER')")
     public Map<String, Object> getUserDetail(@PathVariable @Min(1) Long userId) {
 
         UserResponse userResponse = new UserResponse();
