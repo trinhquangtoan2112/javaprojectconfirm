@@ -35,11 +35,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/path")
-    public String getMethodName() {
-        return "test";
-    }
-
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
 //    @PreAuthorize("hasAnyAuthority('admin')")
