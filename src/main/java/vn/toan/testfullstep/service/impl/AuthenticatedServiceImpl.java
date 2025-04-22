@@ -113,7 +113,6 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
     @Override
     public String forgotPassword(String email) {
         //    check email
-
         //check user active or inactive
         //create token
         //send email
