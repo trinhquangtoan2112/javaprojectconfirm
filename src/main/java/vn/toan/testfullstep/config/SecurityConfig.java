@@ -32,11 +32,12 @@ public class SecurityConfig {
     private final CustomizeRequestFilter requestFilter;
     private final UserServiceDetail userServiceDetail;
     private static final String[] WHITE_LIST = {"/auth/**"};
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers(WHITE_LIST).permitAll()
-                        .anyRequest().authenticated())
+                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -66,7 +67,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebMvcConfigurer corsConfiguration(){
+    public WebMvcConfigurer corsConfiguration() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {

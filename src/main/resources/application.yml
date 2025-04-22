@@ -7,8 +7,9 @@ spring:
   profiles:
     active: @spring.profiles.active@
 
+
 management:
-  endpoints: 
+  endpoints:
     web:
       exposure:
         include: '*'

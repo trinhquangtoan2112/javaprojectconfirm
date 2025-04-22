@@ -8,17 +8,18 @@ import vn.toan.testfullstep.controller.response.UserResponse;
 import vn.toan.testfullstep.model.UserEntity;
 
 public interface UserService {
-     UserPageResponse findAll(String keyword, String sort, int pageNumber, int pageSize);
 
-     UserEntity findById(Long id);
+    UserPageResponse findAll(String keyword, String sort, int pageNumber, int pageSize);
 
-     UserResponse findByUsername(String username);
+    UserEntity findById(Long id);
 
-     long saveUser(UserCreationRequest req);
+    UserResponse findByUsername(String username);
 
-     void update(UserUpdateRequest req);
+    long saveUser(UserCreationRequest req);
 
-     void changePassword(UserPasswordRequest req);
+    void update(UserUpdateRequest req);
 
-     void deleteUser(Long id);
+    void changePassword(UserPasswordRequest req);
+
+    void deleteUser(Long id);
 }
