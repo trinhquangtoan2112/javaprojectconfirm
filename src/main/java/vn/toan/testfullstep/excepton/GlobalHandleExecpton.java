@@ -2,14 +2,12 @@ package vn.toan.testfullstep.excepton;
 
 import java.util.Date;
 
-
 import static org.springframework.http.HttpStatus.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
@@ -33,10 +31,11 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class GlobalHandleExecpton {
 
     @ExceptionHandler({ConstraintViolationException.class,
-            MissingServletRequestParameterException.class, MethodArgumentNotValidException.class})
+        MissingServletRequestParameterException.class, MethodArgumentNotValidException.class})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "Bad Request",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "400", description = "Bad Request",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "Handle exception when the data invalid. (@RequestBody, @RequestParam, @PathVariable)",
                                     summary = "Handle Bad Request",
@@ -80,8 +79,9 @@ public class GlobalHandleExecpton {
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "401", description = "Unauthorized",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "401 Response",
                                     summary = "Handle exception when resource not found",
@@ -106,10 +106,12 @@ public class GlobalHandleExecpton {
 
         return errorResponse;
     }
+
     @ExceptionHandler({ForBiddenException.class, AccessDeniedException.class})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "403", description = "Forbidden",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "403", description = "Forbidden",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "403 Response",
                                     summary = "Handle exception when access forbidden",
@@ -134,10 +136,12 @@ public class GlobalHandleExecpton {
 
         return errorResponse;
     }
+
     @ExceptionHandler(ResourceNotFoundExcepton.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "404", description = "Not Found",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "404", description = "Not Found",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "404 Response",
                                     summary = "Handle exception when resource not found",
@@ -165,8 +169,9 @@ public class GlobalHandleExecpton {
 
     @ExceptionHandler(InvalidDataException.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "409", description = "Conflict",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "409", description = "Conflict",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "409 Response",
                                     summary = "Handle exception when input data is conflicted",
@@ -201,8 +206,9 @@ public class GlobalHandleExecpton {
      */
     @ExceptionHandler(Exception.class)
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "Internal Server Error",
-                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+        @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                content = {
+                    @Content(mediaType = APPLICATION_JSON_VALUE,
                             examples = @ExampleObject(
                                     name = "500 Response",
                                     summary = "Handle exception when internal server error",
@@ -227,6 +233,7 @@ public class GlobalHandleExecpton {
 
         return errorResponse;
     }
+
     @Getter
     @Setter
     @AllArgsConstructor
@@ -234,6 +241,7 @@ public class GlobalHandleExecpton {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     private static class ErrorResponse {
+
         Date timestamp;
         int status;
         String path;

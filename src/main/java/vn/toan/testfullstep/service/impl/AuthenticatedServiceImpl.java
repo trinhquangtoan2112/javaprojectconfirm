@@ -25,7 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import vn.toan.testfullstep.common.TokenType;
 import vn.toan.testfullstep.excepton.InvalidDataException;
 import vn.toan.testfullstep.model.RedisToken;
-import vn.toan.testfullstep.model.Token;
 import vn.toan.testfullstep.model.UserEntity;
 import vn.toan.testfullstep.service.RedisTokenService;
 import vn.toan.testfullstep.service.TokenService;
