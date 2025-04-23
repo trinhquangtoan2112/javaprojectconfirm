@@ -38,7 +38,7 @@ public class UserController {
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
 //    @PreAuthorize("hasAnyAuthority('admin')")
-    @PreAuthorize("hasAnyRole('SYSADMIN')")
+    @PreAuthorize("hasAnyAuthority('SYSADMIN')")
     public Map<String, Object> getListUser(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "0") int pageNum,

@@ -6,14 +6,17 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import vn.toan.testfullstep.common.Gender;
 
 @Getter
 @ToString
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest implements Serializable {
+
     Long id;
     String firstName;
     String lastName;

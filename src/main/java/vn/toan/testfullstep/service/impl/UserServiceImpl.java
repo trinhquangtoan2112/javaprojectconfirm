@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findById(Long id) {
         UserEntity user = userRepository.findById(id).orElseThrow(() -> {
-            return new ResourceNotFoundExcepton("Không tìm thấy người dùngss");
+            return new ResourceNotFoundExcepton("User Not Found");
         });
         log.info("User: {}", user);
         log.info("Roles: {}", user.getRoles());
@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public long saveUser(UserCreationRequest req) {
         UserEntity user = new UserEntity();
+
         user.setFirstName(req.getFirstName());
         user.setLastName(req.getLastName());
         user.setGender(req.getGender());
@@ -123,10 +124,12 @@ public class UserServiceImpl implements UserService {
         user.setPhone(req.getPhone());
         user.setUsername(req.getUsername());
         user.setType(req.getType());
-        user.setStatus(UserStatus.NONE);
+        user.setStatus(UserStatus.ACTIVE);
+
         userRepository.save(user);
-        log.info("Saved user: {}", user);
+        log.info("Saved user123: {}", user.getId());
         if (user.getId() != null) {
+            log.info("Saved address");
             List<AddressEntity> addressess = new ArrayList<>();
             req.getAddresses().forEach(address -> {
                 AddressEntity addressEntity = new AddressEntity();
@@ -141,7 +144,9 @@ public class UserServiceImpl implements UserService {
                 addressEntity.setUserId(user.getId());
                 addressess.add(addressEntity);
             });
+
             addressRepository.saveAll(addressess);
+
             log.info("Save address");
         }
         return user.getId();

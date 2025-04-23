@@ -5,6 +5,7 @@ import java.util.List;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import vn.toan.testfullstep.common.Gender;
@@ -12,9 +13,10 @@ import vn.toan.testfullstep.common.UserType;
 
 @Getter
 @ToString
-
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationRequest {
+
     String firstName;
     String lastName;
     Gender gender;
