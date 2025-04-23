@@ -1,5 +1,6 @@
 package vn.toan.testfullstep.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,12 +29,15 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
+    @Value("${spring.datasource.url}")
+    private String testData;
     private final AuthenticatedService authenticatedService;
 
     @PostMapping("/access-token")
     @Operation(summary = "Access token", description = "Get access token and refresh token by username and password")
     public TokenResponse getAccessToken(@RequestBody SignInRequest signIn) {
-        log.info("Access token");
+        System.out.println(testData);
+        log.info("Access token", testData);
         return authenticatedService.getAccessToken(signIn);
     }
 

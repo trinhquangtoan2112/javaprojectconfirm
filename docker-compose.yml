@@ -11,7 +11,7 @@ services:
       - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - default
 
@@ -20,6 +20,14 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
+    environment:
+      DATABASE_HOST: host.docker.internal
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: toan2002
+      DATABASE_PASSWORD: password
+      LOGSTASH_HOST: host.docker.internal:5600
+      REDIS_HOST: host.docker.internal
+      REDIS_PORT: 6379
     ports:
       - "8080:8080"
     networks:
@@ -43,7 +51,7 @@ services:
     ports:
       - "5601:5601"
     environment:
-      - ELASTICSEARCH_HOSTS=http://elastic-search:9200
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     networks:
       - default
   redis:
@@ -68,7 +76,7 @@ services:
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
-      - XPACK_MONITORING_ELASTICSEARCH_HOSTS=http://elastic-search:9200
+      - XPACK_MONITORING_ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - XPACK_MONITORING_ENABLED=true
     networks:
       - default

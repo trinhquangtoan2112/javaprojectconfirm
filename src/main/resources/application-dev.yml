@@ -16,9 +16,9 @@ spring:
   #       hibernate:
   #         format_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: toan2002
-    password: password
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/postgres
+    username: ${DATABASE_USERNAME:toan2002}
+    password: ${DATABASE_PASSWORD:password}
   jpa:
     properties:
       hibernate:

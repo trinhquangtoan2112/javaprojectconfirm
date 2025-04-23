@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
     <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <!-- <destination>localhost:5600</destination>--> <!--local env-->
-        <destination>${LOGSTASH_HOST:-localhost:5600}</destination> <!--docker env-->
+        <!-- <destination>localhost:5600</destination>--> <!--local
+        env-->
+        <destination>${LOGSTASH_HOST:-localhost:5600}</destination> <!--docker
+        env-->
         <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
             <providers>
-                <mdc/>
-                <context/>
-                <logLevel/>
-                <loggerName/>
+                <mdc />
+                <context />
+                <logLevel />
+                <loggerName />
                 <pattern>
                     <pattern>
                         {
@@ -17,14 +19,14 @@
                         }
                     </pattern>
                 </pattern>
-                <threadName/>
-                <message/>
-                <logstashMarkers/>
-                <stackTrace/>
+                <threadName />
+                <message />
+                <logstashMarkers />
+                <stackTrace />
             </providers>
         </encoder>
     </appender>
     <root level="info">
-        <appender-ref ref="logstash"/>
+        <appender-ref ref="logstash" />
     </root>
 </configuration>

@@ -10,4 +10,4 @@ scrape_configs:
     static_configs:
       - targets: [ 'backend-service:8080' ]
         labels:
-          application: 'Backend Service'
+          application: 'testfullstep'
