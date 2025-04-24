@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+    
+    tools{
+        maven "Maven:test"
+    }
+    
+    stages {
+       stage ("clean workspace"){
+           steps{
+               echo ("Clean workspace")
+               cleanWs()
+           } 
+       }
+       stage ("Checkout from SCM"){
+           steps{
+               git branch: "main",credentialsId: 'GitHub', url: "https://github.com/trinhquangtoan2112/javaprojectconfirm.git"
+           }
+       }
+       stage ("Test mvn"){
+           steps{
+              sh "mvn test"
+           }
+       }
+       stage ("Build application"){
+           steps{
+              sh "mvn clean package"
+           }
+       }
+        stage ("SonarQuebe Analysis"){
+           steps{
+              script {
+                  withSonarQubeEnv(credentialsId:"sonarQube"){
+                      sh "mvn sonar:sonar"
+                  }
+              }
+           }
+       }
+    }
+}

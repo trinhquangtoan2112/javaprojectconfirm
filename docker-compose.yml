@@ -16,6 +16,7 @@ services:
       - default
 
   backend-service:
+    image: trinhtoan2112/testfullstep:20250424
     container_name: backend-service
     build:
       context: ./
