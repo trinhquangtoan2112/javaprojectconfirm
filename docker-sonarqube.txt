@@ -14,3 +14,7 @@ docker run -d --name sonarqube \
     <key>PATH</key>
     <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Docker.app/Contents/Resources/bin/:/Users/quoctay/Library/Group\ Containers/group.com.docker/Applications/Docker.app/Contents/Resources/bin</string>
 </dict>
+
+
+username admin
+password #Quangtoan2112

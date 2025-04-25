@@ -4,3 +4,13 @@
 
 username trinhtoan2112
 password Quangtoan2112
+
+
+su dung docker cho jenkins 
+cai dat docker cho jenkins
+
+docker exec -it --user root <container_name_or_id> bash
+
+apt-get update
+apt-get install -y docker.io	
+docker --version
