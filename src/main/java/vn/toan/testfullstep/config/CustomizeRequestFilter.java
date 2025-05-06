@@ -5,9 +5,11 @@ import java.util.Date;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
@@ -31,6 +33,9 @@ import vn.toan.testfullstep.service.UserServiceDetail;
 import vn.toan.testfullstep.common.TokenType;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 @Slf4j(topic = "Customize-request-filter")
 @RequiredArgsConstructor
@@ -85,7 +90,7 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
         if (StringUtils.hasLength(authHeader) && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             log.info("token: {}...", token.substring(0, 20));
-            String username = "";
+            String username;
             try {
                 username = jwtService.extractUsername(token, TokenType.ACCESS_TOKEN);
                 log.info("username: {}", username);
@@ -127,11 +132,12 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
 
     @Setter
     @Getter
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     private class ErrorResponse {
 
-        private Date timestamp;
-        private int status;
-        private String error;
-        private String message;
+        Date timestamp;
+        int status;
+        String error;
+        String message;
     }
 }

@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,8 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/user")
@@ -38,7 +38,8 @@ public class UserController {
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
 //    @PreAuthorize("hasAnyAuthority('admin')")
-    @PreAuthorize("hasAnyAuthority('SYSADMIN')")
+    @PreAuthorize("hasAnyAuthority('SYSADMIN') and #pageNum == 5")
+
     public Map<String, Object> getListUser(@RequestParam(required = false) String keyword,
             @RequestParam(required = false) String sort,
             @RequestParam(defaultValue = "0") int pageNum,
@@ -115,7 +116,10 @@ public class UserController {
 
     @Operation(summary = "Delete user", description = "API activate user from database")
     @DeleteMapping("/del/{userId}")
+    @PreAuthorize("hasAnyAuthority('SYSADMIN') or #userId == authentication.principal.id")
     public Map<String, Object> deleteUser(@PathVariable Long userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
         userService.deleteUser(userId);
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("status", HttpStatus.RESET_CONTENT.value());
