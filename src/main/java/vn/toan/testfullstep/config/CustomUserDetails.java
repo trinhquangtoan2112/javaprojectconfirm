@@ -1,52 +1,53 @@
 package vn.toan.testfullstep.config;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import vn.toan.testfullstep.common.UserStatus;
+import vn.toan.testfullstep.model.Role;
+import vn.toan.testfullstep.model.UserHasRole;
 
 @Getter
 @Setter
 @Builder
+@Slf4j
 public class CustomUserDetails implements UserDetails {
 
     private Long id;
     private String email;
     private String username;
-    private Collection<? extends GrantedAuthority> authorities;
-
-    public CustomUserDetails(Long id, String email, String username, Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
-        this.authorities = authorities;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
-    }
+    private String password;
+    private UserStatus status;
+    private Set<UserHasRole> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        List<Role> roleList = roles.stream().map(UserHasRole::getRole).toList();
+
+        // Get role name
+        List<String> roleNames = roleList.stream().map(Role::getName).toList();
+
+        log.info("User roles: {}", roleNames);
+        log.info("Test1421424 {}", roleNames);
+        log.info("Authoried {}", roleNames.stream().map(s -> new SimpleGrantedAuthority("ROLE_" + s.toUpperCase())).toList());
+
+        return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
+        //   return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     } // Không cần mật khẩu
 
     @Override
@@ -66,6 +67,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return UserStatus.ACTIVE.equals(status);
     }
 }

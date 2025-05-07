@@ -26,7 +26,7 @@ import java.util.*;
 @Entity(name = "User")
 @Table(name = "tbl_user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserEntity extends AbstractEntity<Long> implements UserDetails, Serializable {
+public class UserEntity extends AbstractEntity<Long> implements Serializable {
 
     @Column(name = "first_name", length = 255)
     String firstName;
@@ -71,38 +71,4 @@ public class UserEntity extends AbstractEntity<Long> implements UserDetails, Ser
 
     Set<GroupHasUser> groups = new HashSet<>();
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<Role> roleList = roles.stream().map(UserHasRole::getRole).toList();
-
-        // Get role name
-        List<String> roleNames = roleList.stream().map(Role::getName).toList();
-
-        log.info("User roles: {}", roleNames);
-        log.info("Test1421424 {}", roleNames);
-        log.info("Authoried {}", roleNames.stream().map(s -> new SimpleGrantedAuthority("ROLE_" + s.toUpperCase())).toList());
-
-        return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
-        //   return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserStatus.ACTIVE.equals(status);
-    }
 }

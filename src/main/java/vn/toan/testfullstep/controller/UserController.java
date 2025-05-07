@@ -116,7 +116,7 @@ public class UserController {
 
     @Operation(summary = "Delete user", description = "API activate user from database")
     @DeleteMapping("/del/{userId}")
-    @PreAuthorize("hasAnyAuthority('SYSADMIN') or #userId == authentication.principal.id")
+    @PreAuthorize("hasAnyAuthority('sysadmin') or #userId == authentication.principal.id")
     public Map<String, Object> deleteUser(@PathVariable Long userId) {
 
         userService.deleteUser(userId);

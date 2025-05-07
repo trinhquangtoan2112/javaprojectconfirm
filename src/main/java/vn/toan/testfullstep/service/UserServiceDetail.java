@@ -16,7 +16,7 @@ public record UserServiceDetail(UserRepository userRepository) implements UserDe
 
     public UserDetailsService userServiceDetail() {
 
-        return userRepository::findByEmail;
+        return this::loadUserByUsername;
 
     }
 
@@ -26,11 +26,15 @@ public record UserServiceDetail(UserRepository userRepository) implements UserDe
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + username);
         }
-        return new CustomUserDetails(
-                user.getId(),
-                user.getEmail(),
-                user.getUsername(),
-                user.getAuthorities() != null ? user.getAuthorities() : Collections.emptyList()
-        );
+        CustomUserDetails customUserDetails = CustomUserDetails.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .username(user.getUsername())
+                .password(user.getPassword())
+                .status(user.getStatus())
+                .roles(user.getRoles()) // Chưa có quyền
+                .build();
+
+        return customUserDetails;
     }
 }
