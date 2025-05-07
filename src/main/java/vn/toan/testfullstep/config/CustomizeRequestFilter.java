@@ -101,7 +101,7 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
                 return;
             }
 
-            UserDetails user = serviceDetail.userServiceDetail().loadUserByUsername(username);
+            UserDetails user = serviceDetail.loadUserByUsername(username);
 //            Tạo đối tượng xác thực và thiết lập vào SecurityContext
             SecurityContext context = SecurityContextHolder.createEmptyContext();
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

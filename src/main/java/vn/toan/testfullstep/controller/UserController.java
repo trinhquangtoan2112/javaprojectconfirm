@@ -118,7 +118,6 @@ public class UserController {
     @DeleteMapping("/del/{userId}")
     @PreAuthorize("hasAnyAuthority('SYSADMIN') or #userId == authentication.principal.id")
     public Map<String, Object> deleteUser(@PathVariable Long userId) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         userService.deleteUser(userId);
         Map<String, Object> result = new LinkedHashMap<>();
