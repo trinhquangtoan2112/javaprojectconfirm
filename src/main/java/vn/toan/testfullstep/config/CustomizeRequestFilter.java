@@ -49,9 +49,9 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        //    check quyen truoc
+        //   check quyen truoc
         //    @Component
-        //    public class RoleBasedAuthorizationFilter extends OncePerRequestFilter {
+        //   NOSONAR  public class RoleBasedAuthorizationFilter extends OncePerRequestFilter {
         //        private static final Map<String, String> URL_ROLE_MAPPING = Map.of(
         //                "/user/list", "ADMIN",
         //                "/user/detail", "USER",
@@ -101,7 +101,6 @@ public class CustomizeRequestFilter extends OncePerRequestFilter {
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             context.setAuthentication(authToken);
             SecurityContextHolder.setContext(context);
-
             filterChain.doFilter(request, response);
         } else {
             filterChain.doFilter(request, response);

@@ -1,5 +1,6 @@
 package vn.toan.testfullstep.config;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -21,14 +22,14 @@ import vn.toan.testfullstep.model.UserHasRole;
 @Setter
 @Builder
 @Slf4j
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, Serializable {
 
     private Long id;
     private String email;
     private String username;
     private String password;
     private UserStatus status;
-    private Set<UserHasRole> roles = new HashSet<>();
+    private transient Set<UserHasRole> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -40,9 +41,9 @@ public class CustomUserDetails implements UserDetails {
         log.info("User roles: {}", roleNames);
         log.info("Test1421424 {}", roleNames);
         log.info("Authoried {}", roleNames.stream().map(s -> new SimpleGrantedAuthority("ROLE_" + s.toUpperCase())).toList());
+        // NOSONAR return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
 
         return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
-        // return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
     }
 
     @Override

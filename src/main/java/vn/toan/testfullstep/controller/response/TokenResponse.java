@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TokenResponse implements Serializable {
+
     String accessToken;
     String refreshToken;
     Long userId;

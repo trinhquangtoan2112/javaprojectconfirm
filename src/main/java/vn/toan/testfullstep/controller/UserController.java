@@ -34,6 +34,9 @@ import org.springframework.http.HttpStatus;
 public class UserController {
 
     private final UserService userService;
+    private static final String STATUS = "status";
+    private static final String MESSAGE = "message";
+    private static final String DATA = "data";
 
     @Operation(summary = "TEST API", description = "Mo ta chi tiet")
     @GetMapping("/list")
@@ -48,9 +51,9 @@ public class UserController {
         UserPageResponse listuser = userService.findAll(keyword, sort, pageNum, pageSize);
 
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.OK.value());
-        result.put("message", "Lấy dữ liệu thành công");
-        result.put("data", listuser);
+        result.put(STATUS, HttpStatus.OK.value());
+        result.put(MESSAGE, "Lấy dữ liệu thành công");
+        result.put(DATA, listuser);
         return result;
 
     }
@@ -72,9 +75,9 @@ public class UserController {
         userResponse.setPhone("0975118228");
 
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.OK.value());
-        result.put("message", "Get user success");
-        result.put("data", userService.findById(userId));
+        result.put(STATUS, HttpStatus.OK.value());
+        result.put(MESSAGE, "Get user success");
+        result.put(DATA, userService.findById(userId));
 
         return result;
     }
@@ -84,9 +87,9 @@ public class UserController {
     public ResponseEntity<Object> createUser(@RequestBody UserCreationRequest request) {
 
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.CREATED.value());
-        result.put("message", "User created successfully");
-        result.put("data", userService.saveUser(request));
+        result.put(STATUS, HttpStatus.CREATED.value());
+        result.put(MESSAGE, "User created successfully");
+        result.put(DATA, userService.saveUser(request));
 
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -96,9 +99,9 @@ public class UserController {
     public Map<String, Object> updateUser(@RequestBody UserUpdateRequest request) {
         userService.update(request);
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.ACCEPTED.value());
-        result.put("message", "User updated successfully");
-        result.put("data", request);
+        result.put(STATUS, HttpStatus.ACCEPTED.value());
+        result.put(MESSAGE, "User updated successfully");
+        result.put(DATA, request);
 
         return result;
     }
@@ -108,8 +111,8 @@ public class UserController {
     public Map<String, Object> changePassword(@RequestBody @Valid UserPasswordRequest request) {
         userService.changePassword(request);
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.NO_CONTENT.value());
-        result.put("message", "Password updated successfully");
+        result.put(STATUS, HttpStatus.NO_CONTENT.value());
+        result.put(MESSAGE, "Password updated successfully");
 
         return result;
     }
@@ -121,9 +124,9 @@ public class UserController {
 
         userService.deleteUser(userId);
         Map<String, Object> result = new LinkedHashMap<>();
-        result.put("status", HttpStatus.RESET_CONTENT.value());
-        result.put("message", "User deleted successfully");
-        result.put("data", "");
+        result.put(STATUS, HttpStatus.RESET_CONTENT.value());
+        result.put(MESSAGE, "User deleted successfully");
+        result.put(DATA, "");
 
         return result;
     }

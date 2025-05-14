@@ -62,10 +62,10 @@ public class UserEntity extends AbstractEntity<Long> implements Serializable {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    Set<UserHasRole> roles = new HashSet<>();
+    transient Set<UserHasRole> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
 
-    Set<GroupHasUser> groups = new HashSet<>();
+    transient Set<GroupHasUser> groups = new HashSet<>();
 
 }
