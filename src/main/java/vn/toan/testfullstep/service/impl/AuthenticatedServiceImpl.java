@@ -18,7 +18,6 @@ import vn.toan.testfullstep.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -96,7 +95,7 @@ public class AuthenticatedServiceImpl implements AuthenticatedService {
     private List<String> getAuthoriy(UserEntity user) {
         return user.getRoles().stream()
                 .map(role -> role.getRole().getName())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

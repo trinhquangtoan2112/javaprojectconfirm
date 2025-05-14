@@ -30,13 +30,11 @@ import vn.toan.testfullstep.controller.request.AddressRequest;
 import vn.toan.testfullstep.controller.request.UserCreationRequest;
 import vn.toan.testfullstep.controller.request.UserUpdateRequest;
 import vn.toan.testfullstep.controller.response.UserPageResponse;
-import vn.toan.testfullstep.controller.response.UserResponse;
 import vn.toan.testfullstep.excepton.ResourceNotFoundExcepton;
 import vn.toan.testfullstep.model.UserEntity;
 import vn.toan.testfullstep.repository.AddressRepository;
 import vn.toan.testfullstep.repository.UserRepository;
 import vn.toan.testfullstep.service.impl.UserServiceImpl;
-import vn.toan.testfullstep.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
@@ -104,6 +102,7 @@ class UserServiceTest {
         assertEquals(2, userPageResponse.getTotalElements());
     }
 
+    @Test
     void testSearch_Success() {
         Page<UserEntity> userPage = new PageImpl<>(Arrays.asList(user1, user2));
         when(userRepository.searchByKeyWord(any(), any(Pageable.class))).thenReturn(userPage);

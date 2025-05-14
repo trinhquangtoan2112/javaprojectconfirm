@@ -42,7 +42,7 @@ public class CustomUserDetails implements UserDetails {
         log.info("Authoried {}", roleNames.stream().map(s -> new SimpleGrantedAuthority("ROLE_" + s.toUpperCase())).toList());
 
         return roleNames.stream().map(SimpleGrantedAuthority::new).toList();
-        //   return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
+        // return roleNames.stream().map(s-> new SimpleGrantedAuthority("ROLE_"+s.toUpperCase())).toList();
     }
 
     @Override

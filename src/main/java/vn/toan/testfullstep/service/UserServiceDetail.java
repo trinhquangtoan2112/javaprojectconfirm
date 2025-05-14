@@ -4,7 +4,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collections;
 import org.springframework.stereotype.Service;
 
 import vn.toan.testfullstep.config.CustomUserDetails;
@@ -16,7 +15,7 @@ public record UserServiceDetail(UserRepository userRepository) implements UserDe
 
     public UserDetailsService userServiceDetail() {
 
-        return this::loadUserByUsername;
+        return UserRepository::findByEmail;
 
     }
 
@@ -26,7 +25,7 @@ public record UserServiceDetail(UserRepository userRepository) implements UserDe
         if (user == null) {
             throw new UsernameNotFoundException("User not found with email: " + username);
         }
-        CustomUserDetails customUserDetails = CustomUserDetails.builder()
+        return new CustomUserDetails.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .username(user.getUsername())
@@ -35,6 +34,5 @@ public record UserServiceDetail(UserRepository userRepository) implements UserDe
                 .roles(user.getRoles()) // Chưa có quyền
                 .build();
 
-        return customUserDetails;
     }
 }
